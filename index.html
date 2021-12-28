@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+    <title>Алгоритм Доджсона - Ислам Тайсумов</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"
+        onload="renderMathInElement(document.body);" type="module"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            Алгоритм приведения матрицы к верхнетреугольному виду
+        </header>
+        <article>
+            <p>Иногда при работе с матрицами нам необходимо приводить их к верхнетреугольному виду.</p>
+            <p>Для того, чтобы матрица была приведена корректно, можно воспользоваться алгоритмом Доджсона, который сохраняет целочисленность.</p>
+            <p>Итак, есть матрица <span id="f1"></span>. Для данной матрицы <span id="f2"></span> алгоритм работает следующим образом.</p>
+            <p>Положим, <span id="f3"></span> и <span id="f4"></span> (элементы матрицы), <span id="f5"></span> ; тогда для <span id="f6"></span> положим</p>
+            <div id="f7"></div>
+            <p>Данную формулу из книги Акритаса можно представить и по-другому:</p>
+            <div id="ff"></div>
+            <p>Можно заметить, что деление в данном случае никак не влияет на целочисленность (доказывается по индукции). Это можно увидеть на примере вычисления одного из элементов.</p>
+            <p>Пусть мы имеем матрицу:</p>
+            <div id="f8"></div>
+            <p>На первой итерации ( <span id="f9"></span> ) мы получим следующий результат:</p>
+            <div id="f10"></div>
+            <p>Здесь фактически деления не происходит: для этого мы указали "нулевой" элемент, равный единице.</p>
+            <p>Вычислим, к примеру, элемент <span id="f11"></span> :</p>
+            <div id="f12"></div>
+            <div id="f13"></div>
+            <div id="f14"></div>
+            <p>Таким образом, каждый элемент подматрицы можно без остатка разделить на <span id="f15"></span>.</p>
+            <p>Однако стоит учитывать, что элемент диагонали может быть нулевым. Чтобы избежать деления на ноль, воспользуемся <i>методом пузырька</i> для замены строки с нулевым элементом в нужном нам столбце на первую встретившуюся строку с ненулевым элементом в соотвествующем столбце.</p>
+            <p>Следующая анимация поможет понять алгоритм перестановки:</p>
+            <img src="./img/1.gif" alt="" width="100%">
+            <p>Также для наглядности далее следует анимация, показывающая, какие элементы используются в перерасчёте текущего элемента:</p>
+            <img src="./img/2.gif" alt="" width="100%">
+            <p>Ниже представлена программа, приводящая заданную матрицу к верхнетреугольному виду.</p>
+        </article>
+
+        
+
+        <p id="label">Введите размерность матрицы:</p>
+        
+        <div class='ctrl'>
+            <div class='ctrl-button ctrl-button-decrement'>-</div>
+            <div class='ctrl-counter'>
+              <input class='ctrl-counter-input' type="number" id="input-size" value="3">
+              <div class='ctrl-counter-num'>3</div>
+            </div>
+            <div class='ctrl-button ctrl-button-increment'>+</div>
+          </div>
+        
+        <button id="input-btn" type="submit" onclick="submitSize();" class="draw meet">
+            Ввести матрицу
+        </button>
+
+        <div id="pseudocontainer">
+            <div class="inputMatrix" id="matrixDiv">
+                <table id="tableMatrix" class="tableMatrix">
+                </table>
+                <button style="display: none;" id="btn-calc" class="draw meet"></button>
+            </div>
+        </div>
+    </div>
+    <br><br><br><br>
+
+    <script type="module">
+        katex.render("n \\times n", document.getElementById("f1"));
+        katex.render("M", document.getElementById("f2"));
+        katex.render("m^{-1}_{00}:=1", document.getElementById("f3"));
+        katex.render("m^{0}_{ij}:=m_{ij}", document.getElementById("f4"));
+        katex.render("i, j=1,...,n", document.getElementById("f5"));
+        katex.render("k<i,j\\leqslant n", document.getElementById("f6"));
+        katex.render("m_{ij}^{(k)}=\\left [ m_{k-1, k-1}^{(k-2)} \\right ]^{-1}det\\begin{bmatrix}\nm_{kk}^{(k-1)} & m_{kj}^{(k-1)}\\\\\n m_{ik}^{(k-1)} & m_{ij}^{(k-1)}\n\\end{bmatrix}", document.getElementById("f7"));
+        katex.render("\\begin{bmatrix}\n a & b & c & d & e & ...\\\\\n f & g & h & i & j & ...\\\\\n k & l & m & n & o & ...\\\\\n ... \n\\end{bmatrix}", document.getElementById("f8"));
+        katex.render("k=1", document.getElementById("f9"));
+        katex.render("\\begin{bmatrix}\n a & b & c & d & e & ...\\\\\n 0 & ag-bf & ah-cf & ai-df & aj-ef & ...\\\\\n 0 & al-bk & am-ck & an-dk & ao-ek & ...\\\\\n ... \n\\end{bmatrix}", document.getElementById("f10"));
+        katex.render("m^{(2)}_{3,3}", document.getElementById("f11"));
+        katex.render("m^{(2)}_{3,3}=(ag-bf)(am-ck)-(al-bk)(ah-cf)=", document.getElementById("f12"));
+        katex.render("=aagm-acgk-abfm+\\sout{bcfk}-aahl+acfl+abhk-\\sout{bcfk}", document.getElementById("f13"));
+        katex.render("=a(agm-cgk-bfm-ahl+cfl+bhk)", document.getElementById("f14"));
+        katex.render("a", document.getElementById("f15"));
+        katex.render("m_{ij}^{(k)}=\\frac{m_{kk}^{(k-1)}\\times m_{ij}^{(k-1)}-m_{ik}^{(k-1)}\\times m_{ki}^{(k-1)}}{m_{k-1,k-1}^{k-2}}", document.getElementById("ff"));
+        //katex.render("", document.getElementById(""));
+    </script>
+    <script src="script.js"></script>
+</body>
+</html>
