@@ -205,7 +205,7 @@ function Triangulation(initMatrix, matrices){
         }
     }
 
-    lastOutput(i, true);
+    lastOutput(N-1, true);
 
     return resultMatrix;
 }
