@@ -4,6 +4,7 @@ let matrixDiv = document.getElementById("matrixDiv");       //контейнер
 let tableMatrix = document.getElementById("tableMatrix");   //таблица
 
 inputSize.value = 3;
+let counterSwaps = 0;
 
 function calc() {
 
@@ -16,6 +17,7 @@ function calc() {
 
     matrixDiv.appendChild(matrices);
 
+    counterSwaps = 0;
     let isEmpty = false;
     for(let i = 0; i < inputSize.value; i++) {
         for(let j = 0; j < inputSize.value; j++) {
@@ -147,7 +149,7 @@ function output_iteration(matrix, i, matrices) {
 function lastOutput(numOfFinalIter, success) {
     if (success) {
         let last = document.createElement("p");
-        last.innerHTML = "Алгоритм успешно выполнил " + numOfFinalIter + " итераций и окончил свою работу!"; 
+        last.innerHTML = "Алгоритм успешно выполнил " + numOfFinalIter + " итераций и окончил свою работу! Определитель матрицы будет равен нижнему правому элементу" + (counterSwaps % 2 ? ", но с противоположным знаком." : "."); 
         matrices.appendChild(last);
     } else {
         let last = document.createElement("p");
@@ -177,6 +179,7 @@ function Triangulation(initMatrix, matrices){
                         let temp = resultMatrix[x];
                         resultMatrix[x] = resultMatrix[x-1];
                         resultMatrix[x-1] = temp;
+                        counterSwaps += 1;
                     }
                     break;
                 }
